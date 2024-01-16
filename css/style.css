@@ -58,6 +58,7 @@
     background-color: #fff;
     transition: top 1s ease,;
     padding: 70px 0;
+    min-height: 100vh;
 }
 
 .newsbox .top {

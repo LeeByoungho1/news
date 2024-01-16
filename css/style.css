@@ -76,6 +76,16 @@
     padding: 0 5%;
 }
 
+.newsbox .top button {
+    border: 0;
+    background-color: transparent;
+    color: #fff;
+}
+
+.newsbox .top button i {
+    color: mediumaquamarine;
+}
+
 .newsbox .top .fontSize {
     width: 120px;
     display: flex;
@@ -87,14 +97,8 @@
     border-radius: 25px;
 }
 
-.newsbox .top button {
-    border: 0;
-    background-color: transparent;
-    color: #fff;
-}
-
-.newsbox .top button i {
-    color: mediumaquamarine;
+.newsbox .top .fontSize button {
+    width: 30px;
 }
 
 .newsbox .bottom {

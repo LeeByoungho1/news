@@ -104,12 +104,12 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 70px;
+    height: 46.6px;
     background-color: #262626;
     color: #fff;
-    font-size: 20px;
+    font-size: 13.3px;
     font-weight: bold;
-    padding: 0 5%;
+    padding: 5%;
 }
 
 .newsbox .top button {
@@ -127,9 +127,9 @@
     justify-content: space-around;
     align-items: center;
     border: 1px solid #686868;
-    height: 40px;
-    padding: 0 15px;
-    border-radius: 25px;
+    height: 26.6px;
+    padding: 0 10px;
+    border-radius: 16.6px;
 }
 
 .newsbox .bottom {
@@ -140,12 +140,12 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 70px;
+    height: 46.6px;
     background-color: #262626;
     color: #fff;
-    font-size: 20px;
+    font-size: 13.3px;
     font-weight: bold;
-    padding: 0 5%;
+    padding: 5%;
 }
 
 .newsbox .bottom button {

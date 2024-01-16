@@ -54,10 +54,9 @@ $("#scroll-container .scroll-content").on("click", function () {
                 var title = $(this).find("V_TITLE").text();
                 var date = "수정 " + $(this).find("DATE_LASTMODIFIED").text();
                 var content = $(this).find("V_BODY").html();
-                var modifiedContent1 = content.replace(/<div[^>]*>.*?<\/div>|<p>&nbsp;<\/p>|<p>&nbsp;<\/p>\]\]>|]]>/gs, '');
-                var modifiedContent = modifiedContent1.replace(/<figure[^>]*>\s*.*?\s*<\/figure>|<p>\s*&nbsp;\s*<\/p>|<p>\s*<\/p>\]\]>|]]>/gs, '');
-
-                // console.log(modifiedContent)
+                var modifiedContent = content.replace(/(<div[^>]*>.*?<\/div>|<\/div>|<p>&nbsp;<\/p>|<p>&nbsp;<\/p>\]\]>|]]>)|(<figure[^>]*>\s*.*?\s*<\/figure>|<p>\s*&nbsp;\s*<\/p>|<p>\s*<\/p>\]\]>|]]>)/gs, '');
+                
+                console.log(modifiedContent)
                 var box = `<div id="box${index}"><h2 id="h2${index}">${title}</h2><h6 id="date">${date}</h6><p id="p${index}">${modifiedContent}</p></div>`;
                 $(".news").append(box);
             })

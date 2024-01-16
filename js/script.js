@@ -23,7 +23,8 @@ document.addEventListener('mousemove', (e) => {
 
 
 // 뉴스 카테고리 클릭시
-var url = ["https://open.assembly.go.kr/portal/openapi/nkyhxppmamrzejhij",
+var url = ["",
+    "https://open.assembly.go.kr/portal/openapi/nkyhxppmamrzejhij",
     "https://open.assembly.go.kr/portal/openapi/nzsmstfjaswvtbzii",
     "https://open.assembly.go.kr/portal/openapi/nepfnxudavtvchtlu",
     "https://open.assembly.go.kr/portal/openapi/nknsekyoahvonwlll",
@@ -38,49 +39,49 @@ $("#scroll-container .scroll-content").on("click", function () {
     $("#title").text($(this).text())
 
     var categoryIndex = $(this).index()
-
     $(".newsBoxTitles").empty();
     $(".news").empty();
-    $.ajax({
-        url: url[categoryIndex],
-        type: 'GET',
-        // headers: {
-        //     "KEY" : "e5c459d4cc2d4602b39791531cbb87b1",
-        //     "Type" : "xml",
-        //     "pIndex" : 2,
-        //     "Psize" : 6
-        // },
 
-        success: function (data) {
+    if (categoryIndex < 1) {
+        $(".search #closeBtn").trigger('click')
+        $(".search #searchBtn").trigger('click')
 
-            // news
-            $(data).find("row").each(function (index) {
+    } else {
+        $.ajax({
+            url: url[categoryIndex],
+            type: 'GET',
 
-                var title = $(this).find("V_TITLE").text();
-                var date = "수정 " + $(this).find("DATE_LASTMODIFIED").text();
-                var content = $(this).find("V_BODY").html();
-                var modifiedContent = content.replace(/(<div[^>]*>.*?<\/div>|<\/div>|<p>&nbsp;<\/p>|<p>&nbsp;<\/p>\]\]>|]]>)|(<figure[^>]*>\s*.*?\s*<\/figure>|<p>\s*&nbsp;\s*<\/p>|<p>\s*<\/p>\]\]>|]]>)/gs, '');
+            success: function (data) {
 
-                // console.log(modifiedContent)
-                var box = `<div id="box${index}"><h2 id="h2${index}">${title}</h2><h6 id="date">${date}</h6><p id="p${index}">${modifiedContent}</p></div>`;
-                $(".news").append(box);
-            })
+                // news
+                $(data).find("row").each(function (index) {
 
-            // title
-            $(data).find("row").each(function (index) {
-                var title = $(this).find("V_TITLE").text();
-                var h2 = `<h2 id="h2${index}">${title}</h2>`
-                $(".newsBoxTitles").append(h2);
-            })
-        },
+                    var title = $(this).find("V_TITLE").text();
+                    var date = "수정 " + $(this).find("DATE_LASTMODIFIED").text();
+                    var content = $(this).find("V_BODY").html();
+                    var modifiedContent = content.replace(/(<div[^>]*>.*?<\/div>|<\/div>|<p>&nbsp;<\/p>|<p>&nbsp;<\/p>\]\]>|]]>)|(<figure[^>]*>\s*.*?\s*<\/figure>|<p>\s*&nbsp;\s*<\/p>|<p>\s*<\/p>\]\]>|]]>)/gs, '');
 
-        error: function (error) {
-            console.log('Error: ', error);
-        }
-    });
+                    // console.log(content)
+                    var box = `<div id="box${index}"><h2 id="h2${index}">${title}</h2><h6 id="date">${date}</h6><p id="p${index}">${modifiedContent}</p></div>`;
+                    $(".news").append(box);
+                })
+
+                // title
+                $(data).find("row").each(function (index) {
+                    var title = $(this).find("V_TITLE").text();
+                    var h2 = `<h2 id="h2${index}">${title}</h2>`
+                    $(".newsBoxTitles").append(h2);
+                })
+            },
+
+            error: function (error) {
+                console.log('Error: ', error);
+            }
+        });
+    }
 })
 
-$("#scroll-container .scroll-content").eq(0).trigger('click')
+$("#scroll-container .scroll-content").eq(1).trigger('click')
 
 var titleIndex = 0
 
@@ -97,6 +98,10 @@ $(".newsBoxTitles").on("click", "h2", function () {
 $(".newsbox #close").on("click", function () {
     $(".newsbox").fadeOut()
     $(".newsBoxTitles").css({ display: "block" })
+})
+
+$(".newsbox #summary").on("click", function () {
+    console.log($(".news").children("div").eq(titleIndex).text())
 })
 
 // 뉴스 폰트크기 조절
@@ -133,7 +138,12 @@ var inputTxt = ""
 $(".search #searchBtn").on("click", function () {
     var searchTerm = $("#searchInput").val();
     inputTxt = searchTerm
-    $("#title").text(inputTxt)
+    if (inputTxt.length < 1) {
+        $("#title").text("전체")
+    } else {
+        $("#title").text(inputTxt)
+    }
+    
     $("#closeBtn").hide();
     $("#searchInput").val("");
 
@@ -178,7 +188,7 @@ $(".search #searchBtn").on("click", function () {
             }
         });
     }
-    setTimeout(function(){
+    setTimeout(function () {
         if (num < 1) {
             var h2 = `<h2>"검색 결과가 없습니다."</h2>`
             $(".newsBoxTitles").append(h2)

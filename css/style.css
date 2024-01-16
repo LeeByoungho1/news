@@ -1,0 +1,144 @@
+#scroll-container {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 5%;
+}
+
+.scroll-content {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: #757574;
+    font-weight: bold;
+    background-color: #f0f0f2;
+    margin-right: 10px;
+    transition: color 0.5s ease, background-color 0.5s ease;
+}
+
+/* 스크롤바를 숨기기 */
+#scroll-container::-webkit-scrollbar {
+    display: none;
+    /* WebKit 브라우저에서 스크롤바를 숨김 */
+}
+
+#scroll-container {
+    scrollbar-width: none;
+    /* Firefox 브라우저에서 스크롤바를 숨김 */
+}
+
+#title {
+    padding: 5% 5% 0;
+    font-weight: bold;
+}
+
+.newsBoxTitles {
+    padding: 5%;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.newsBoxTitles h2 {
+    border-bottom: 1px solid #f3f3f3;
+    padding: 5% 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+
+
+.newsbox {
+    width: 100vw;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0%;
+    display: none;
+    background-color: #fff;
+    transition: top 1s ease,;
+    padding: 70px 0;
+}
+
+.newsbox .top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    background-color: #262626;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 0 5%;
+}
+
+.newsbox .top .fontSize {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid #686868;
+    height: 40px;
+    padding: 0 15px;
+    border-radius: 25px;
+}
+
+.newsbox .top button {
+    border: 0;
+    background-color: transparent;
+    color: #fff;
+}
+
+.newsbox .top button i {
+    color: mediumaquamarine;
+}
+
+.newsbox .bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    background-color: #262626;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 0 5%;
+}
+
+.newsbox .bottom button {
+    border: 0;
+    background-color: transparent;
+    color: #fff;
+}
+
+.newsbox .news div {
+    padding: 5%;
+    width: auto;
+    /* position: absolute; */
+}
+
+.newsbox .news div {
+    display: none;
+}
+
+.newsbox .news div p {
+    font-size: 14px;
+}
+
+.newsbox .news div h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.newsbox .news div #date {
+    color: #757574;
+    font-size: 15px;
+    margin: 15px 0 30px;
+}

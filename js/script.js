@@ -76,6 +76,8 @@ $("#scroll-container .scroll-content").on("click", function () {
     });
 })
 
+$("#scroll-container .scroll-content").eq(0).trigger('click')
+
 var titleIndex = 0
 
 // 뉴스 제목 클릭시

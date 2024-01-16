@@ -44,7 +44,12 @@ $("#scroll-container .scroll-content").on("click", function () {
     $.ajax({
         url: url[categoryIndex],
         type: 'GET',
-        dataType: 'xml',
+        // headers: {
+        //     "KEY" : "e5c459d4cc2d4602b39791531cbb87b1",
+        //     "Type" : "xml",
+        //     "pIndex" : 2,
+        //     "Psize" : 6
+        // },
 
         success: function (data) {
 
@@ -55,8 +60,8 @@ $("#scroll-container .scroll-content").on("click", function () {
                 var date = "수정 " + $(this).find("DATE_LASTMODIFIED").text();
                 var content = $(this).find("V_BODY").html();
                 var modifiedContent = content.replace(/(<div[^>]*>.*?<\/div>|<\/div>|<p>&nbsp;<\/p>|<p>&nbsp;<\/p>\]\]>|]]>)|(<figure[^>]*>\s*.*?\s*<\/figure>|<p>\s*&nbsp;\s*<\/p>|<p>\s*<\/p>\]\]>|]]>)/gs, '');
-                
-                console.log(modifiedContent)
+
+                // console.log(modifiedContent)
                 var box = `<div id="box${index}"><h2 id="h2${index}">${title}</h2><h6 id="date">${date}</h6><p id="p${index}">${modifiedContent}</p></div>`;
                 $(".news").append(box);
             })
@@ -82,17 +87,21 @@ var titleIndex = 0
 // 뉴스 제목 클릭시
 $(".newsBoxTitles").on("click", "h2", function () {
     titleIndex = $(this).index()
+    $(".newsBoxTitles").css({ display: "none" })
     $(".newsbox").fadeIn()
     $(".newsbox .news div").css({ display: "none" })
     $(".newsbox .news div").eq(titleIndex).css({ display: "block" })
+    $(window).scrollTop(0)
 });
 
 $(".newsbox #close").on("click", function () {
     $(".newsbox").fadeOut()
+    $(".newsBoxTitles").css({ display: "block" })
 })
 
+// 뉴스 폰트크기 조절
 var fontSize = 14
-$(".newsbox #minus").attr("disabled", true).children("i").css({ color : "#686868" });
+$(".newsbox #minus").attr("disabled", true).children("i").css({ color: "#686868" });
 
 $(".newsbox #minus, .newsbox #plus").on("click", function () {
     var attId = $(this).attr("id")
@@ -106,14 +115,90 @@ $(".newsbox #minus, .newsbox #plus").on("click", function () {
     }
 
     if (fontSize < 16) {
-        $(".newsbox #minus").attr("disabled", true).children("i").css({ color : "#686868" });
+        $(".newsbox #minus").attr("disabled", true).children("i").css({ color: "#686868" });
     } else {
-        $(".newsbox #minus").attr("disabled", false).children("i").css({ color : "mediumaquamarine" });
+        $(".newsbox #minus").attr("disabled", false).children("i").css({ color: "mediumaquamarine" });
     }
 
     if (fontSize > 16) {
-        $(".newsbox #plus").attr("disabled", true).children("i").css({ color : "#686868" });
+        $(".newsbox #plus").attr("disabled", true).children("i").css({ color: "#686868" });
     } else {
-        $(".newsbox #plus").attr("disabled", false).children("i").css({ color : "mediumaquamarine" });
+        $(".newsbox #plus").attr("disabled", false).children("i").css({ color: "mediumaquamarine" });
     }
 })
+
+var inputTxt = ""
+
+// 검색 버튼 클릭 시
+$(".search #searchBtn").on("click", function () {
+    var searchTerm = $("#searchInput").val();
+    inputTxt = searchTerm
+    $("#title").text(inputTxt)
+    $("#closeBtn").hide();
+    $("#searchInput").val("");
+
+    $(".newsBoxTitles").empty();
+    $(".news").empty();
+    var num = 0
+
+    for (var i = 0; i < url.length; i++) {
+        var newUrl = url[i] + `?V_TITLE=${inputTxt}`
+        console.log(newUrl)
+        $.ajax({
+            url: newUrl,
+            type: 'GET',
+
+            success: function (data) {
+                // news
+                $(data).find("row").each(function (index) {
+
+                    var title = $(this).find("V_TITLE").text();
+                    var date = "수정 " + $(this).find("DATE_LASTMODIFIED").text();
+                    var content = $(this).find("V_BODY").html();
+                    var modifiedContent = content.replace(/(<div[^>]*>.*?<\/div>|<\/div>|<p>&nbsp;<\/p>|<p>&nbsp;<\/p>\]\]>|]]>)|(<figure[^>]*>\s*.*?\s*<\/figure>|<p>\s*&nbsp;\s*<\/p>|<p>\s*<\/p>\]\]>|]]>)/gs, '');
+
+                    // console.log(modifiedContent)
+                    var box = `<div id="box${index}"><h2 id="h2${index}">${title}</h2><h6 id="date">${date}</h6><p id="p${index}">${modifiedContent}</p></div>`;
+                    $(".news").append(box);
+                })
+
+                // title
+                $(data).find("row").each(function (index) {
+                    var title = $(this).find("V_TITLE").text();
+                    var h2 = `<h2 id="h2${index}">${title}</h2>`
+                    $(".newsBoxTitles").append(h2);
+                    if ($(data).length > 0) {
+                        num = num + $(data).length;
+                    }
+                })
+            },
+
+            error: function (error) {
+                console.log('Error: ', error);
+            }
+        });
+    }
+    setTimeout(function(){
+        if (num < 1) {
+            var h2 = `<h2>"검색 결과가 없습니다."</h2>`
+            $(".newsBoxTitles").append(h2)
+        }
+    }, 300)
+});
+
+// 닫기 버튼 클릭 시
+$(".search #closeBtn").on("click", function () {
+    $("#searchInput").val("");
+    $(this).hide()
+});
+
+$("#searchInput").on("input", function () {
+    var searchTerm = $(this).val();
+
+    // 검색어가 1자 이상이면 닫기 버튼을 보이도록 설정
+    if (searchTerm.length > 0) {
+        $("#closeBtn").show();
+    } else {
+        $("#closeBtn").hide();
+    }
+});
